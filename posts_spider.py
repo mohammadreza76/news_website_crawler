@@ -88,7 +88,8 @@ class TasnimNEWS(scrapy.Spider):
 class IsnaNews(scrapy.Spider):
     name = 'isna_all'
     
-    start_urls = ['https://www.isna.ir/archive?pi=1&ms=0&dy=30&mn=3&yr=1385']
+    start_urls = [
+        'https://www.isna.ir/archive?pi=1&ms=0&dy=1&mn=2&yr=1389']
     allowed_domains = ['isna.ir']
     
     def parse(self, response):
@@ -102,9 +103,11 @@ class IsnaNews(scrapy.Spider):
                 next_page = response.urljoin(next_page.extract())
                 yield scrapy.Request(next_page, callback=self.parse)  
 
-        #just crawl first page of each day
-        for j in range(2,32):
-            next_day = 'https://www.isna.ir/archive?pi=1&ms=0&dy='+str(j)+'&mn=5&yr=1385'
+        
+    #just crawl first page of each day
+    def parse_day(self,response):
+        for j in range(2,3):
+            next_day = 'https://www.isna.ir/archive?pi=1&ms=0&dy='+str(j)+'&mn=2&yr=1389'
             yield scrapy.Request(next_day, callback=self.parse)   
         
         
